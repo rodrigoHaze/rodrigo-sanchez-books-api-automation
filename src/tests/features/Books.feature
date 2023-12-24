@@ -1,7 +1,7 @@
 Feature: Restful Booker API Testing
 
   Scenario: Create Booking - Positive Test
-    Given I have valid booking details
+    Given I have valid booking details 
     When I send a POST request to '/booking' with these details
     Then I should receive a successful status code and a booking id
 
@@ -11,7 +11,7 @@ Feature: Restful Booker API Testing
     Then I should receive an error code and a message indicating what was wrong
 
   Scenario: Retrieve Booking - Positive Test
-    Given a booking with a known id exists
+    Given a booking with a known id exists get book by id
     When I send a GET request to '/booking/{id}' 
     Then I should receive a successful status code and the booking details
 
