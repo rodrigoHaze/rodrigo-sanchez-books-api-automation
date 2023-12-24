@@ -4,9 +4,9 @@ module.exports = {
     formatOptions: {
       snippetInterface: "async-await",
     },
-    paths: ["src/test/features/"],
+    paths: ["src/tests/features/"],
     dryRun: false,
-    require: ["src/test/steps/*.ts", "src/hooks/hooks.ts"],
+    require: ["src/tests/steps/*.ts", "src/hooks/hooks.ts"],
     requireModule: ["ts-node/register"],
     format: [
       "progress-bar",
@@ -21,7 +21,7 @@ module.exports = {
       snippetInterface: "async-await",
     },
     dryRun: false,
-    require: ["src/test/steps/*.ts", "src/hooks/hooks.ts"],
+    require: ["src/tests/steps/*.ts", "src/hooks/hooks.ts"],
     requireModule: ["ts-node/register"],
     format: [
       "progress-bar",
