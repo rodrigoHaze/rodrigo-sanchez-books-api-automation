@@ -1,0 +1,29 @@
+{
+  "name": "rodrigo-sanchez-books-api-automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx cucumber-js --config=config/cucumber.js || true "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigoHaze/rodrigo-sanchez-books-api-automation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodrigoHaze/rodrigo-sanchez-books-api-automation/issues"
+  },
+  "homepage": "https://github.com/rodrigoHaze/rodrigo-sanchez-books-api-automation#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "@types/node": "^20.10.5",
+    "dotenv": "^16.3.1",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^10.1.0"
+  }
+}
