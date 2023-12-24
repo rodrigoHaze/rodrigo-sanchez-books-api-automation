@@ -6,6 +6,8 @@ let booking: Array<number> = new Array<number>();
 let controller = new ApiController();
 let lastCreated: number;
 let lastStatusInfo: any;
+let id: number;
+let authBody: any;
 
 Given("I have valid booking details", async function () {
   const response = await controller.getMethodWithoutParams(
@@ -94,122 +96,187 @@ Then(
   }
 );
 Given("a booking with a known id exists get book by id", async function () {
-  const id = controller.getRandomElementFromArray(booking);
+  id = controller.getRandomElementFromArray(booking);
+});
+When("I send a GET request to {string}", async function (string) {
+  const ids = controller.getRandomElementFromArray(booking);
   const response = await controller.getMethodWithoutParams(
-    constants.BOOK_ENDPOINTS.getBooking(id),
+    constants.BOOK_ENDPOINTS.getBooking(ids),
     constants.BASE_URL!
   );
-  console.log(await response.json());
+  lastStatusInfo = {
+    code: response.status(),
+    text: response.statusText(),
+  };
 });
 Given("a booking with a known id exists", async function () {});
 
-When("I send a GET request to {string}", async function (string) {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
-});
-
 Then(
-  "I should receive a successful status code and the booking details",
+  "I should receive a successful status code and the booking details get",
   async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return "pending";
+    expect(lastStatusInfo.code).toBe(200);
+    expect(lastStatusInfo.text).toBe("OK");
   }
 );
 
 Given("a booking with a known id does not exist", async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
+  id = 999999999999999;
 });
 
 When("I send a GET request to {string} with wrong id", async function (string) {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
+  const response = await controller.getMethodWithoutParams(
+    constants.BOOK_ENDPOINTS.getBooking(id),
+    constants.BASE_URL!
+  );
+  lastStatusInfo = {
+    code: response.status(),
+    text: response.statusText(),
+  };
 });
 
 Then("I should receive a not found status code", async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
+  expect(lastStatusInfo.code).toBe(404);
+  expect(lastStatusInfo.text).toBe("Not Found");
 });
 
 Given(
   "a booking with a known id exists and I have valid new booking details",
   async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return "pending";
+    console.log(lastCreated);
   }
 );
 
 When(
   "I send a PUT request to {string} with the new details",
   async function (string) {
-    // Write code here that turns the phrase above into concrete actions
-    return "pending";
+    const body = {
+      firstname: "Juan",
+      lastname: "Pedro",
+      totalprice: 888,
+      depositpaid: true,
+      bookingdates: {
+        checkin: "2024-01-01",
+        checkout: "2023-01-01",
+      },
+      additionalneeds: "Breakfast",
+    };
+    const response = await controller.putEditObjectWithToken(
+      body,
+      constants.BOOK_ENDPOINTS.updateBooking(lastCreated),
+      constants.BASE_URL!,
+      constants.TOKEN!
+    );
+    lastStatusInfo = {
+      code: response.status(),
+      text: response.statusText(),
+    };
+    const jsonResponse = await response.json();
+    expect(jsonResponse.firstname).toEqual(body.firstname);
+    expect(jsonResponse.lastname).toEqual(body.lastname);
+    expect(jsonResponse.totalprice).toEqual(body.totalprice);
+    expect(jsonResponse.depositpaid).toEqual(body.depositpaid);
+    expect(jsonResponse.bookingdates.checkin).toEqual(
+      body.bookingdates.checkin
+    );
+    expect(jsonResponse.additionalneeds).toEqual(body.additionalneeds);
   }
 );
 
 Then(
   "I should receive a successful status code and the updated booking details",
   async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return "pending";
-  }
-);
-
-Given(
-  "a booking with a known id does not exist and I have valid new booking details",
-  async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return "pending";
+    expect(lastStatusInfo.code).toBe(200);
+    expect(lastStatusInfo.text).toBe("OK");
   }
 );
 
 When("I send a PUT request to {string} wrong id", async function (string) {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
+  let ide = 999999999999999;
+  const body = {
+    firstname: "Juan",
+    lastname: "Pedro",
+    totalprice: 888,
+    depositpaid: true,
+    bookingdates: {
+      checkin: "2024-01-01",
+      checkout: "2023-01-01",
+    },
+    additionalneeds: "Breakfast",
+  };
+  const response = await controller.putEditObjectWithToken(
+    body,
+    constants.BOOK_ENDPOINTS.updateBooking(ide),
+    constants.BASE_URL!,
+    constants.TOKEN!
+  );
+  lastStatusInfo = {
+    code: response.status(),
+    text: response.statusText(),
+  };
 });
-
-When("I send a DELETE request to {string}", async function (string) {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
+Then("I should receive a Method Not Allowed status code", async function () {
+  expect(lastStatusInfo.code).toBe(405);
+  expect(lastStatusInfo.text).toBe("Method Not Allowed");
 });
+When(
+  "a booking with a known id exists THEN send a DELETE request to {string}",
+  async function (string) {
+    const response = await controller.deleteObjectWithToken(
+      constants.BOOK_ENDPOINTS.deleteBooking(lastCreated),
+      constants.BASE_URL!,
+      constants.TOKEN!
+    );
+    lastStatusInfo = {
+      code: response.status(),
+      text: response.statusText(),
+    };
+  }
+);
 
 Then(
   "I should receive a successful status code indicating the booking was deleted",
   async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return "pending";
+    expect(lastStatusInfo.code).toBe(201);
+    expect(lastStatusInfo.text).toBe("Created");
   }
 );
 
 Given("I have valid credentials", async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
+  authBody = {
+    username: "admin",
+    password: "password123",
+  };
 });
 
 When("I use them to authenticate for a secured endpoint", async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
+  const response = await controller.postNewObjectNoToken(
+    authBody,
+    constants.BOOK_ENDPOINTS.createToken,
+    constants.BASE_URL!
+  );
+  const jsonResponse = await response.json();
+  lastStatusInfo = {
+    code: response.status(),
+    text: response.statusText(),
+  };
+  expect(jsonResponse.token).not.toBeNull();
+  expect(jsonResponse.token).not.toBeUndefined();
+  expect(jsonResponse.token).not.toBeNaN();
 });
 
 Then(
   "I should receive a token and access the secured functionality",
   async function () {
-    // Write code here that turns the phrase above into concrete actions
-    return "pending";
+    expect(lastStatusInfo.code).toBe(200);
+    expect(lastStatusInfo.text).toBe("OK");
   }
 );
 
-Given("the server is down or unreachable", async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
-});
-
-When("I try to access any endpoint", async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
-});
-
-Then("I should receive a server error status code", async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return "pending";
+Then("send request to check health", async function () {
+  const response = await controller.getMethodWithoutParams(
+    constants.BOOK_ENDPOINTS.healthCheck,
+    constants.BASE_URL!
+  );
+  expect(response.status()).toBe(201);
+  //expect(response.text()).toBe("Created");
 });

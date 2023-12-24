@@ -1,5 +1,6 @@
 require("dotenv").config();
 const BASE_URL = process.env.BASE_URL;
+const TOKEN = process.env.TOKEN;
 const BOOK_ENDPOINTS = {
   createBooking: `/booking`,
   getBooking: (id: number) => `/booking/${id}`,
@@ -34,4 +35,5 @@ export default {
   BOOK_ENDPOINTS,
   BASE_URL,
   BODY_FORMAT,
+  TOKEN,
 };

@@ -13,7 +13,7 @@ Feature: Restful Booker API Testing
   Scenario: Retrieve Booking - Positive Test
     Given a booking with a known id exists get book by id
     When I send a GET request to '/booking/{id}' 
-    Then I should receive a successful status code and the booking details
+    Then I should receive a successful status code and the booking details get
 
   Scenario: Retrieve Booking - Negative Test (Non-existent ID)
     Given a booking with a known id does not exist
@@ -26,13 +26,11 @@ Feature: Restful Booker API Testing
     Then I should receive a successful status code and the updated booking details
 
   Scenario: Update Booking - Negative Test (Non-existent ID)
-    Given a booking with a known id does not exist and I have valid new booking details
     When I send a PUT request to '/booking/{id}' wrong id
-    Then I should receive a not found status code
+    Then I should receive a Method Not Allowed status code
 
   Scenario: Delete Booking - Positive Test
-    Given a booking with a known id exists
-    When I send a DELETE request to '/booking/{id}' 
+    When a booking with a known id exists THEN send a DELETE request to '/booking/{id}' 
     Then I should receive a successful status code indicating the booking was deleted
 
   Scenario: Authentication - Positive Test
@@ -41,6 +39,4 @@ Feature: Restful Booker API Testing
     Then I should receive a token and access the secured functionality
 
   Scenario: General Server Down Test
-    Given the server is down or unreachable
-    When I try to access any endpoint
-    Then I should receive a server error status code
+    Then send request to check health 
