@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "all": "npx cucumber-js --config=config/cucumber.js || true "
+    "all": "npx cucumber-js --config=config/cucumber.js || true ",
+    "regression": "npx cucumber-js --config=config/cucumber.js --tags='@Regression'|| true "
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,8 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^10.1.0"
+    "@cucumber/cucumber": "^10.1.0",
+    "exceljs": "^4.4.0",
+    "python-shell": "^5.0.0"
   }
 }

@@ -19,18 +19,7 @@ pipeline {
                 sh 'npm run all'
             }
         }
-        stage('Cucumber Reports') {
-            steps {
-                script {
-                    cucumber buildStatus: 'SUCCESS',
-                            reportTitle: 'Booking API Automation Results',
-                            fileIncludePattern: 'test-results/cucumber-report.json',
-                            trendsLimit: 10
-
-                
-                }
-            }
-        }
+       
 
     }
 

@@ -30,10 +30,25 @@ const BODY_FORMAT = function (
     additionalneeds: additionalneeds,
   };
 };
+const EXCEL_HEADERS: string[] = [
+  "id",
+  "featureName",
+  "name",
+  "uri",
+  "tags",
+  "steps",
+  "status",
+  "duration(nanoseconds)",
+  "retried",
+  "failure",
+];
+const EXCEL_FILE_NAME = "ExcelReport";
 
 export default {
   BOOK_ENDPOINTS,
   BASE_URL,
   BODY_FORMAT,
   TOKEN,
+  EXCEL_HEADERS,
+  EXCEL_FILE_NAME,
 };
