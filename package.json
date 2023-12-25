@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx cucumber-js --config=config/cucumber.js || true "
+    "all": "npx cucumber-js --config=config/cucumber.js || true "
   },
   "repository": {
     "type": "git",
