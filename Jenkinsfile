@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {nodejs "node"}
     environment {
-        SLACK_CREDENTIAL_ID = 'token_slack'
+        SLACK_CREDENTIAL_ID = 'slack-token'
         SLACK_CHANNEL = '#istqb'    
     }
     stages {
