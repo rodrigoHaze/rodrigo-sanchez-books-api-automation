@@ -34,8 +34,6 @@ After(async function (scenario: any) {
     retried: scenario.willBeRetried,
     failure: failure,
   };
-  console.log(object);
-
   await addRowExcel(object, constants.EXCEL_FILE_NAME);
 });
 AfterAll(() => {

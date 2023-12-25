@@ -9,7 +9,6 @@ module.exports = {
     require: ["src/tests/steps/*.ts", "src/hooks/hooks.ts"],
     requireModule: ["ts-node/register"],
     format: [
-      "progress-bar",
       "html:test-results/cucumber-report.html",
       "json:test-results/cucumber-report.json",
       "rerun:@rerun.txt",
@@ -29,6 +28,6 @@ module.exports = {
       "json:test-results/cucumber-report.json",
       "rerun:@rerun.txt",
     ],
-    parallel: 2,
+    parallel: 1,
   },
 };

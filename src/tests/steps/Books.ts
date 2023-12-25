@@ -142,7 +142,7 @@ Then("I should receive a not found status code", async function () {
 Given(
   "a booking with a known id exists and I have valid new booking details",
   async function () {
-    console.log(lastCreated);
+    console.log(" ");
   }
 );
 

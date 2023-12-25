@@ -129,6 +129,7 @@ export async function createExcel(headers: string[], fileName: string) {
   worksheet.addRow(headers);
   // Guardar el archivo Excel inicial
   await workbook.xlsx.writeFile(fileName + ".xlsx");
+  console.log("Sheet Created");
 }
 export async function addRowExcel(scenarioData: any, fileName: string) {
   const workbook = new ExcelJS.Workbook();
@@ -147,6 +148,7 @@ export async function addRowExcel(scenarioData: any, fileName: string) {
     scenarioData.failure,
   ]);
   await workbook.xlsx.writeFile(fileName + ".xlsx");
+  console.log("Sheet Updated");
 }
 export function cleanErrorMessage(error: string) {
   // Remove ANSI escape codes
