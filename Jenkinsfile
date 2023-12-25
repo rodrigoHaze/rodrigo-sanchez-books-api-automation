@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {nodejs "node"}
     environment {
-        SLACK_CREDENTIAL_ID = 'token_slack' 
+        SLACK_CREDENTIAL_ID = 'slack_tokens'
         SLACK_CHANNEL = '#istqb'    
     }
     stages {
@@ -44,11 +44,11 @@ pipeline {
                 def jobName = 'trucker-cloud-carrier-api-automation-pipeline/'
                 def reportPath = ''
                 def reportUrl = "${jenkinsBaseUrl}${jobName}${buildNumber}/${reportPath}"
-                slackSend(tokenCredentialId: token_slack, color: 'good', message: "Carrier API Execution Completed \n ${reportUrl}", channel: SLACK_CHANNEL)
+                slackSend(tokenCredentialId: SLACK_CREDENTIAL_ID, color: 'good', message: "Carrier API Execution Completed \n ${reportUrl}", channel: SLACK_CHANNEL)
             }
             }
         failure {  
-            slackSend(tokenCredentialId: token_slack, color: 'danger', message: "Tests Failed", channel: SLACK_CHANNEL)
+            slackSend(tokenCredentialId: SLACK_CREDENTIAL_ID, color: 'danger', message: "Tests Failed", channel: SLACK_CHANNEL)
            
             }
             
