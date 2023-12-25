@@ -1,36 +1,58 @@
 pipeline {
-    agent any // This tells Jenkins to run the pipeline on any available agent
-
+    agent any
+    tools {nodejs "node"}
+    environment {
+        SLACK_CREDENTIAL_ID = 'slack-token' 
+        SLACK_CHANNEL = '#istqb'    
+    }
     stages {
-        stage('Build') { // The first stage is called "Build"
+        stage('Installation') {
             steps {
-                // Put commands here to build your project, for example:
-                echo 'Building..'
-                // sh 'mvn clean package' // Uncomment and modify if you're using Maven, for example
+                echo 'Installing dependencies...'
+                sh 'npm install'
+                sh 'npx playwright install'
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                echo 'Running tests...'
+                sh 'npm run all'
+            }
+        }
+        stage('Cucumber Reports') {
+            steps {
+                script {
+                    cucumber buildStatus: 'SUCCESS',
+                            reportTitle: 'Booking API Automation Results',
+                            fileIncludePattern: 'test-results/cucumber-report.json',
+                            trendsLimit: 10
+
+                
+                }
             }
         }
 
-        stage('Test') { // The second stage is called "Test"
-            steps {
-                // Put commands here to test your project, for example:
-                echo 'Testing..'
-                // sh './run-tests.sh' // Uncomment and modify to run your test script
-            }
-        }
     }
-
     post {
-        always {
-            // This block always executes, regardless of the build status
-            echo 'This will always run'
-        }
         success {
-            // This block only executes if the build is successful
-            echo 'The build was successful!'
+            echo 'Tests completed successfully. Sending report to Slack...'        
+            
+            script{
+                
+                def buildNumber = env.BUILD_NUMBER
+                def jenkinsBaseUrl = 'https://jenkins.truckercloud.com/job/'
+                def jobName = 'trucker-cloud-carrier-api-automation-pipeline/'
+                def reportPath = ''
+                def reportUrl = "${jenkinsBaseUrl}${jobName}${buildNumber}/${reportPath}"
+                slackSend(tokenCredentialId: SLACK_CREDENTIAL_ID, color: 'good', message: "Carrier API Execution Completed \n ${reportUrl}", channel: SLACK_CHANNEL)
+            }
+            }
+        failure {  
+            slackSend(tokenCredentialId: SLACK_CREDENTIAL_ID, color: 'danger', message: "Tests Failed", channel: SLACK_CHANNEL)
+           
+            }
+            
         }
-        failure {
-            // This block only executes if the build fails
-            echo 'The build failed.'
-        }
+        
+
     }
-}
